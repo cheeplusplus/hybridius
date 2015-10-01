@@ -3,14 +3,15 @@ Hybridius is a tiny Python-based shorturl application. It supports both custom a
 
 Installation
 ---
-1. Install `requirements.txt` with pip
+1. Install `requirements.txt` with pip.
 2. Copy `data/hybridius.settings.default` to `data/hybridius.settings` and modify settings as needed. CHANGE THE KEYS!
-3. Run it however you host a Python webserver
+3. Run it however you host a Python webserver. A sample wsgi script is included.
 
 
 Future
 ---
 * Caching (in-memory, memcached, Redis)
+* Ability to add extra blueprints without interfering with Git repository
 * Mixed file hosting (Hybridius was originally intended to be a mixed target and static content shorturl service)
 
 

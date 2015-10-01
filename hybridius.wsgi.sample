@@ -1,0 +1,7 @@
+import sys
+sys.path.insert(0, "/your/path/to/hybridius")
+
+activate_this = "/your/path/to/hybridius/ENV/bin/activate_this.py"
+execfile(activate_this, dict(__file__=activate_this))
+
+from hybridius import app as application
