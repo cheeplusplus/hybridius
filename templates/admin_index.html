@@ -1,0 +1,12 @@
+{% extends "template.html" %}
+{% from "_formhelpers.html" import add_form_template, form_div_class, form_errors %}
+{% block title %}Hybridius Admin{% endblock %}
+{% block content %}
+<h1>Hybridius Admin</h1>
+
+<br />
+
+<p><a href="{{ url_for('.add') }}">Add shortcode</a></p>
+<p><a href="{{ url_for('.list') }}">List existing shortcodes</a></p>
+
+{% endblock %}

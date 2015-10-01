@@ -1,0 +1,24 @@
+{% extends "template.html" %}
+{% from "_formhelpers.html" import form_div_class, form_errors %}
+{% block title %}Hybridius Admin{% endblock %}
+{% block content %}
+<h1>Add Shortcode</h1>
+
+<br />
+
+<form action="{{ url_for('.edit', shortcode=data.shortcode) }}" method="POST">
+    <div class="form-group">
+        <label class="control-label">Shortcode</label>
+        {{ add_form.shortcode.data }}
+    </div>
+    <div class="form-group {{ form_div_class(add_form.target_url) }}">
+        <label class="control-label">Destination</label>
+        {{ add_form.target_url(class_="form-control", autocomplete="off") }}
+        {{ form_errors(add_form.target_url) }}
+    </div>
+    <input type="submit" value="Edit shortcode" class="btn btn-default" />
+</form>
+
+<br />
+<p><a href="{{ url_for('.list') }}">Return</a></p>
+{% endblock %}

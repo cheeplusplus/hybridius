@@ -1,0 +1,7 @@
+SECRET_KEY = "REPLACE ME"
+SESSION_TYPE = "filesystem"
+
+SHORTCODE_LENGTH = 3
+DEFAULT_URL = "https://www.google.com/"
+ADMIN_USER = "replaceme!"
+ADMIN_PASS = "replaceme."

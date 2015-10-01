@@ -1,0 +1,13 @@
+{% macro form_div_class(field) %}
+    {% if field.errors %}has-error{% endif %}
+{% endmacro %}
+
+{% macro form_errors(field) %}
+    {% if field.errors %}
+    <div class="help-block">
+        {% for error in field.errors %}
+        <span>{{ error }}</span>
+        {% endfor %}
+    </div>
+    {% endif %}
+{% endmacro %}

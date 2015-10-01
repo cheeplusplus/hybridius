@@ -1,0 +1,39 @@
+{% extends "template.html" %}
+{% block title %}Hybridius Admin{% endblock %}
+{% block content %}
+<h1>Shortcodes List</h1>
+
+<br />
+
+{% macro list_table(name, items) %}
+<h3>{{ name }}</h3>
+{% if items %}
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Shortcode</th><th>Target</th><th>Edit</th><th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for v in items %}
+    <tr>
+        <td><a href="{{ url_for('redirect.target', shortcode=v.shortcode) }}">{{ v.shortcode }}</a></td>
+        <td><a href="{{ v.target_url }}">{{ v.target_url }}</a></td>
+        <td><a href="{{ url_for('admin.edit', shortcode=v.shortcode) }}">Edit</a></td>
+        <td><a href="{{ url_for('admin.delete', shortcode=v.shortcode) }}">Delete</a></td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>There's nothing here.</p>
+{% endif %}
+{% endmacro %}
+
+{{ list_table("Non-random", results["nonrandom"]) }}
+{{ list_table("Random", results["random"]) }}
+
+<br />
+<p><a href="{{ url_for('.index') }}">Return</a></p>
+
+{% endblock %}

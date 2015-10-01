@@ -1,0 +1,47 @@
+{% extends "template.html" %}
+{% from "_formhelpers.html" import form_div_class, form_errors %}
+{% block title %}Hybridius Admin{% endblock %}
+{% block content %}
+<h1>Add Shortcode</h1>
+
+<br />
+
+<form action="{{ url_for('admin.add') }}" method="POST">
+    <div class="form-group">
+        Random?
+    </div>
+    <div class="checkbox">
+        <label>
+            {{ add_form.is_random() }}
+        </label>
+    </div>
+    <div class="form-group {{ form_div_class(add_form.shortcode) }}">
+        <label class="control-label">Shortcode</label>
+        {{ add_form.shortcode(class_="form-control", autocomplete="off", disabled=add_form.is_random.data) }}
+        {{ form_errors(add_form.shortcode) }}
+    </div>
+    <div class="form-group {{ form_div_class(add_form.target_url) }}">
+        <label class="control-label">Destination</label>
+        {{ add_form.target_url(class_="form-control", autocomplete="off") }}
+        {{ form_errors(add_form.target_url) }}
+    </div>
+    <input type="submit" value="Add shortcode" class="btn btn-default" />
+</form>
+
+<br />
+<p><a href="{{ url_for('.index') }}">Return</a></p>
+{% endblock %}
+{% block postscript %}
+<script type="text/javascript">
+$(document).ready(function() {
+    var valbox = $("#{{ add_form.shortcode.id }}");
+    $("#{{ add_form.is_random.id }}").click(function(e) {
+        var v = $(e.target).prop("checked");
+        valbox.prop("disabled", v);
+        if (v) {
+            valbox.val("");
+        }
+    });
+});
+</script>
+{% endblock %}
