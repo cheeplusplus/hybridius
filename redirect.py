@@ -1,4 +1,4 @@
-from flask import Blueprint, abort, redirect, current_app
+from flask import Blueprint, abort, redirect, render_template, current_app
 import json
 import functools
 import database_helper
@@ -16,9 +16,17 @@ def root():
 
 @redir_page.route("/<shortcode>")
 def target(shortcode):
+    is_view = False
+    if shortcode[-1:] == "+":
+        shortcode = shortcode[:-1]
+        is_view = True
+
     result = database_helper.get_shortcode_target(shortcode)
     if result == None:
         return abort(404)
+
+    if is_view:
+        return render_template("index_view.html", shortcode=shortcode, data=result, sitename=current_app.config["SITENAME"])
 
     if result.is_random:
         code = 301

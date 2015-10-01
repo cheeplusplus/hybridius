@@ -2,7 +2,7 @@ from wtforms import Form, BooleanField, TextField, validators
 import re
 
 illegal_shortcode_names = ["admin"]
-legal_shortcode_regex = "^[a-zA-Z0-9\.\_\-\~\!\$\&\'\(\)\*\+\,\;\=]*$"
+legal_shortcode_regex = "^[a-zA-Z0-9\.\_\-\~\!\$\&\'\(\)\*\,\;\=]*$"
 
 def shortcode_validator(form, field):
 	if field.data is not None:

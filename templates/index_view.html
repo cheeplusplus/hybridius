@@ -1,0 +1,15 @@
+{% extends "template.html" %}
+{% block title %}{{ sitename }}{% endblock %}
+{% block content %}
+<h1>{{ sitename }}</h1>
+
+<br />
+
+<p>The shortcode {{ shortcode }} redirects to</p>
+<p><mark>{{ data.target_url }}</mark></p>
+
+<br />
+
+<p><a href="{{ url_for('.target', shortcode=shortcode) }}" class="btn btn-default">Visit</a></p>
+
+{% endblock %}
