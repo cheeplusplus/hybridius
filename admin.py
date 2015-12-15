@@ -43,7 +43,7 @@ def requires_auth(f):
 @admin_page.before_request
 def require_https():
     if not "dev_mode" in current_app.config and request.headers.get("X-Forwarded-Proto", "http") != "https":
-        return redirect(request.path)
+        return redirect(request.url.replace("http://", "https://"))
 
 
 # Routes
