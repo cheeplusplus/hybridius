@@ -1,7 +1,8 @@
+from functools import wraps
 import random, string, json
-from flask import Blueprint, request, redirect, Response, render_template, flash, url_for, current_app
+from flask import Blueprint, request, redirect, Response, render_template, flash, url_for, current_app, session
 
-from forms import AddForm
+from forms import AddForm, LoginForm
 import database_helper
 
 
@@ -26,26 +27,52 @@ def check_auth(username, password):
     return username == current_app.config["ADMIN_USER"] and password == current_app.config["ADMIN_PASS"]
 
 
-def authenticate():
-    return Response("Credentials required.", 401, {"WWW-Authenticate": "Basic realm='Login required'"})
+def check_session_auth():
+    return "authorization" in session and session["authorization"] == "Yes"
+
+
+def requires_auth(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        if not check_session_auth():
+            return redirect(url_for(".login"))
+        return f(*args, **kwargs)
+    return decorated
 
 
 @admin_page.before_request
-def restrict_access():
-    auth = request.authorization
-    if not auth or not check_auth(auth.username, auth.password):
-        return authenticate()
+def require_https():
+    if not "dev_mode" in current_app.config and request.headers.get("X-Forwarded-Proto", "http") != "https":
+        return redirect(request.path)
 
 
 # Routes
 
 
 @admin_page.route("/")
+@requires_auth
 def index():
     return render_template("admin_index.html")
 
 
+@admin_page.route("/login", methods=["GET", "POST"])
+def login():
+    if check_session_auth():
+        return redirect(url_for(".index"))
+
+    form = LoginForm(request.form)
+    form.login_validator = check_auth
+    if request.method != "POST" or not form.validate():
+        return render_template("admin_login.html", login_form=form)
+
+    # Login successful
+    session["authorization"] = "Yes"
+
+    return redirect(url_for(".index"))
+
+
 @admin_page.route("/list")
+@requires_auth
 def list():
     results = database_helper.get_all()
     random = []
@@ -67,6 +94,7 @@ def list():
 
 
 @admin_page.route("/export")
+@requires_auth
 def export():
     results = database_helper.get_all()
     arr = map(lambda a: { "is_random": a.is_random, "shortcode": a.shortcode, "target_url": a.target_url }, results)
@@ -75,6 +103,7 @@ def export():
 
 
 @admin_page.route("/add", methods=["GET", "POST"])
+@requires_auth
 def add():
     form = AddForm(request.form)
     if request.method != "POST" or not form.validate():
@@ -125,6 +154,7 @@ def add():
 
 
 @admin_page.route("/edit/<shortcode>", methods=["GET", "POST"])
+@requires_auth
 def edit(shortcode):
     result = database_helper.get_shortcode_target(shortcode)
     if result is None:
@@ -148,6 +178,7 @@ def edit(shortcode):
 
 
 @admin_page.route("/delete/<shortcode>", methods=["GET", "POST"])
+@requires_auth
 def delete(shortcode):
     result = database_helper.get_shortcode_target(shortcode)
     if result is None:

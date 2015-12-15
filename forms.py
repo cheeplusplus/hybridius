@@ -1,4 +1,4 @@
-from wtforms import Form, BooleanField, TextField, validators
+from wtforms import Form, BooleanField, TextField, PasswordField, validators
 import re
 
 illegal_shortcode_names = ["admin"]
@@ -23,3 +23,21 @@ class AddForm(Form):
     	validators.Required(),
     	validators.Length(max=1024, message="Max limit 1024 characters.")
 	])
+
+
+class LoginForm(Form):
+    username = TextField("Username", [validators.Required()])
+    password = PasswordField("Password", [validators.Required()])
+
+    login_validator = None
+
+    def validate(self):
+        rv = Form.validate(self)
+        if not rv:
+            return False
+
+        if not self.login_validator(self.username.data, self.password.data):
+            self.username.errors.append("Invalid login.")
+            return False
+
+        return True

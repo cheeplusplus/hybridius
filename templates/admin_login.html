@@ -1,0 +1,25 @@
+{% extends "template.html" %}
+{% from "_formhelpers.html" import form_div_class, form_errors %}
+{% block title %}Hybridius Admin{% endblock %}
+{% block content %}
+<h1>Hybridius Login</h1>
+
+<br />
+
+<form action="{{ url_for('admin.login') }}" method="POST">
+    <div class="form-group {{ form_div_class(login_form.username) }}">
+        <label class="control-label">Username</label>
+        {{ login_form.username(class_="form-control") }}
+        {{ form_errors(login_form.username) }}
+    </div>
+    <div class="form-group {{ form_div_class(login_form.password) }}">
+        <label class="control-label">Password</label>
+        {{ login_form.password(class_="form-control") }}
+        {{ form_errors(login_form.password) }}
+    </div>
+    <input type="submit" value="Login" class="btn btn-default" />
+</form>
+
+<br />
+<p><a href="{{ url_for('.index') }}">Return</a></p>
+{% endblock %}
