@@ -1,4 +1,4 @@
-from wtforms import Form, BooleanField, TextField, PasswordField, validators
+from wtforms import Form, BooleanField, StringField, PasswordField, validators
 import re
 
 illegal_shortcode_names = ["admin"]
@@ -15,19 +15,19 @@ def shortcode_validator(form, field):
 
 class AddForm(Form):
     is_random = BooleanField("Shortcode is random", default=True)
-    shortcode = TextField("Custom shortcode", [
+    shortcode = StringField("Custom shortcode", [
 		validators.Length(max=20),
 		shortcode_validator
 	])
-    target_url = TextField("Destination", [
-    	validators.Required(),
+    target_url = StringField("Destination", [
+    	validators.InputRequired(),
     	validators.Length(max=1024, message="Max limit 1024 characters.")
 	])
 
 
 class LoginForm(Form):
-    username = TextField("Username", [validators.Required()])
-    password = PasswordField("Password", [validators.Required()])
+    username = StringField("Username", [validators.InputRequired()])
+    password = PasswordField("Password", [validators.InputRequired()])
 
     login_validator = None
 

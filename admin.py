@@ -1,6 +1,6 @@
 from functools import wraps
 import random, string, json
-from flask import Blueprint, request, redirect, Response, render_template, flash, url_for, current_app, session
+from flask import abort, Blueprint, request, redirect, Response, render_template, flash, url_for, current_app, session
 
 from forms import AddForm, LoginForm
 import database_helper

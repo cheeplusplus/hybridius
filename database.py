@@ -5,7 +5,8 @@ from sqlalchemy.ext.declarative import declarative_base
 import os
 
 
-db_file = "sqlite:///%s/data/hybridius.sqlite" % (os.path.dirname(__file__))
+curpath = os.path.dirname(os.path.abspath(__file__))
+db_file = "sqlite:///%s/data/hybridius.sqlite" % curpath
 
 engine = create_engine(db_file, convert_unicode=True)
 db_session = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=engine))
